@@ -1,18 +1,27 @@
-CC=gcc
+program_NAME := zespolone
+program_C_SRCS := $(wildcard *.c)
+program_CXX_SRCS := $(wildcard *.cpp)
+program_C_OBJS := ${program_C_SRCS:.c=.o}
+program_CXX_OBJS := ${program_CXX_SRCS:.cpp=.o}
+program_OBJS := $(program_C_OBJS) $(program_CXX_OBJS)
+program_INCLUDE_DIRS :=
+program_LIBRARY_DIRS :=
+program_LIBRARIES :=
+
 CFLAGS = -Wall -std=c99
-LDLIBS = -lm
+CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir))
+LDFLAGS += $(foreach librarydir,$(program_LIBRARY_DIRS),-L$(librarydir))
+LDFLAGS += $(foreach library,$(program_LIBRARIES),-l$(library))
 
-SOURCES = Zad01 Zad02 Zad03 Zad04
+.PHONY: all clean distclean
 
-all: 	$(SOURCES)
+all: $(program_NAME)
 
-Zad01: Zad01.c
-	$(CC) -E $^
-	
-Zad02: Zad02.c
-	$(CC) -E $^
+$(program_NAME): $(program_OBJS)
+    $(LINK.cc) $(program_OBJS) -o $(program_NAME)
 
 clean:
-	rm -f $(SOURCES)
-	
-.PHONY: all clean
+    @- $(RM) $(program_NAME)
+    @- $(RM) $(program_OBJS)
+
+distclean: clean
