@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define MAX_DL_IM 11
 #define MAX_DL_NA 17
 
